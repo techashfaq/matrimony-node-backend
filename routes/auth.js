@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const upload = require('../config/s3');
+const { upload } = require('../config/s3');
 const authController = require('../controllers/authController');
 
 // POST /api/auth/register
