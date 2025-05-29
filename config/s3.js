@@ -23,7 +23,7 @@ const uploadToS3 = async (file) => {
       Key: `profile-photos/${Date.now()}-${file.originalname}`,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: 'public-read',
+      // ACL: 'public-read',
     }
   });
 
