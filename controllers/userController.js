@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { uploadToS3 } = require('../config/s3');
 
 // Register new user
 exports.register = async (req, res) => {
@@ -25,7 +26,13 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const profilePhoto = req.file ? req.file.location : null; // Get S3 file URL
+    let profilePhotoUrl = null;
+
+    if (req.file) {
+      profilePhotoUrl = await uploadToS3(req.file)
+    }
+
+    // const profilePhoto = req.file ? req.file.location : null; // Get S3 file URL
 
     const newUser = new User({
       fullName,
@@ -40,7 +47,7 @@ exports.register = async (req, res) => {
       profession,
       location,
       bio,
-      profilePhoto
+      profilePhoto: profilePhotoUrl
     });
 
     await newUser.save();

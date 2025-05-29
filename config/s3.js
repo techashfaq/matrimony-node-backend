@@ -4,7 +4,6 @@ const multer = require('multer');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Configure multer to store file in memory
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -17,7 +16,7 @@ const s3Client = new S3Client({
 });
 
 const uploadToS3 = async (file) => {
-  const upload = new Upload({
+  const parallelUpload = new Upload({
     client: s3Client,
     params: {
       Bucket: process.env.AWS_S3_BUCKET,
@@ -28,8 +27,8 @@ const uploadToS3 = async (file) => {
     }
   });
 
-  const result = await upload.done();
-  return result.Location;
+  const result = await parallelUpload.done();
+  return result.Location; // URL of uploaded file
 };
 
 module.exports = {
