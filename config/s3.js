@@ -22,7 +22,8 @@ const uploadToS3 = async (file) => {
       Bucket: process.env.AWS_S3_BUCKET,
       Key: `profile-photos/${Date.now()}-${file.originalname}`,
       Body: file.buffer,
-      ContentType: file.mimetype
+      ContentType: file.mimetype,
+      // ACL: 'public-read',
     }
   });
 
